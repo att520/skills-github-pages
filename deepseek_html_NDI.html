@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颈部功能障碍指数(NDI)问卷调查</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 12px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .options label:hover {
+            background-color: #ebf5fb;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        #calculateBtn {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+            margin: 30px auto;
+            transition: background-color 0.3s;
+        }
+        #calculateBtn:hover {
+            background-color: #2980b9;
+        }
+        #calculateBtn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        #result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+        }
+        .score-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .interpretation {
+            font-size: 20px;
+            color: #e74c3c;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .recommendation {
+            background-color: #fff;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-top: 15px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>颈部功能障碍指数(NDI)问卷调查</h1>
+        <p>请根据您当前的情况选择最符合的选项。完成所有问题后点击"计算NDI评分"按钮。</p>
+        
+        <form id="ndiForm">
+            <!-- 第一部分：疼痛强度 -->
+            <div class="section">
+                <h3>第一部分：疼痛强度</h3>
+                <div class="options">
+                    <label><input type="radio" name="pain" value="0" required> 0分：我此刻没有疼痛。</label>
+                    <label><input type="radio" name="pain" value="1"> 1分：此刻疼痛非常轻微。</label>
+                    <label><input type="radio" name="pain" value="2"> 2分：此刻有中等程度的疼痛。</label>
+                    <label><input type="radio" name="pain" value="3"> 3分：此刻疼痛相当严重。</label>
+                    <label><input type="radio" name="pain" value="4"> 4分：此刻疼痛非常严重。</label>
+                    <label><input type="radio" name="pain" value="5"> 5分：此刻疼痛难以想象。</label>
+                </div>
+            </div>
+
+            <!-- 第二部分：个人护理 -->
+            <div class="section">
+                <h3>第二部分：个人护理（洗漱、穿衣等）</h3>
+                <div class="options">
+                    <label><input type="radio" name="care" value="0" required> 0分：我可以正常照顾自己，而不会引起额外的疼痛。</label>
+                    <label><input type="radio" name="care" value="1"> 1分：我可以正常照顾自己，但会引起额外的疼痛。</label>
+                    <label><input type="radio" name="care" value="2"> 2分：在照顾自己时，我会感到疼痛，且动作缓慢而小心。</label>
+                    <label><input type="radio" name="care" value="3"> 3分：我需要一些帮助，但能够处理大部分个人护理。</label>
+                    <label><input type="radio" name="care" value="4"> 4分：在大多数个人护理活动中，我每天都需要帮助。</label>
+                    <label><input type="radio" name="care" value="5"> 5分：我无法自己穿衣，洗漱也很困难，不得不卧床。</label>
+                </div>
+            </div>
+
+            <!-- 其他部分类似，为了简洁这里省略，实际使用时需要包含所有10个部分 -->
+            <!-- 第三部分：提物 -->
+            <div class="section">
+                <h3>第三部分：提物</h3>
+                <div class="options">
+                    <label><input type="radio" name="lifting" value="0" required> 0分：我可以提重物而不会引起额外的疼痛。</label>
+                    <label><input type="radio" name="lifting" value="1"> 1分：我可以提重物，但会引起额外的疼痛。</label>
+                    <label><input type="radio" name="lifting" value="2"> 2分：疼痛使我无法从地上提起重物，但如果重物放在合适的位置（如桌子上），我可以设法提起。</label>
+                    <label><input type="radio" name="lifting" value="3"> 3分：疼痛使我无法提起重物，但可以提起中等重量的物品（如放在合适位置）。</label>
+                    <label><input type="radio" name="lifting" value="4"> 4分：我只能提非常轻的物体。</label>
+                    <label><input type="radio" name="lifting" value="5"> 5分：我完全无法提任何东西。</label>
+                </div>
+            </div>
+
+            <!-- 第四部分：阅读 -->
+            <div class="section">
+                <h3>第四部分：阅读</h3>
+                <div class="options">
+                    <label><input type="radio" name="reading" value="0" required> 0分：我可以随意阅读而不会引起颈痛。</label>
+                    <label><input type="radio" name="reading" value="1"> 1分：我可以随意阅读，但会引起轻度颈痛。</label>
+                    <label><input type="radio" name="reading" value="2"> 2分：我可以随意阅读，但会引起中度颈痛。</label>
+                    <label><input type="radio" name="reading" value="3"> 3分：因中度的颈痛，使我无法随意阅读。</label>
+                    <label><input type="radio" name="reading" value="4"> 4分：因严重的颈痛，使我阅读困难。</label>
+                    <label><input type="radio" name="reading" value="5"> 5分：我完全无法阅读。</label>
+                </div>
+            </div>
+
+            <!-- 第五部分：头痛 -->
+            <div class="section">
+                <h3>第五部分：头痛</h3>
+                <div class="options">
+                    <label><input type="radio" name="headache" value="0" required> 0分：我完全没有头痛。</label>
+                    <label><input type="radio" name="headache" value="1"> 1分：我有轻微的头痛，但不经常发生。</label>
+                    <label><input type="radio" name="headache" value="2"> 2分：我有中度头痛，但不经常发生。</label>
+                    <label><input type="radio" name="headache" value="3"> 3分：我有中度头痛，且经常发生。</label>
+                    <label><input type="radio" name="headache" value="4"> 4分：我有严重的头痛，且经常发生。</label>
+                    <label><input type="radio" name="headache" value="5"> 5分：我几乎一直有头痛。</label>
+                </div>
+            </div>
+
+            <!-- 第六部分：集中注意力 -->
+            <div class="section">
+                <h3>第六部分：集中注意力</h3>
+                <div class="options">
+                    <label><input type="radio" name="concentration" value="0" required> 0分：我可以完全集中注意力而没有任何困难。</label>
+                    <label><input type="radio" name="concentration" value="1"> 1分：我可以完全集中注意力，但有轻微困难。</label>
+                    <label><input type="radio" name="concentration" value="2"> 2分：我在集中注意力时有相当程度的困难。</label>
+                    <label><input type="radio" name="concentration" value="3"> 3分：我在集中注意力时有很大困难。</label>
+                    <label><input type="radio" name="concentration" value="4"> 4分：我在集中注意力时有非常大困难。</label>
+                    <label><input type="radio" name="concentration" value="5"> 5分：我完全无法集中注意力。</label>
+                </div>
+            </div>
+
+            <!-- 第七部分：工作 -->
+            <div class="section">
+                <h3>第七部分：工作</h3>
+                <div class="options">
+                    <label><input type="radio" name="work" value="0" required> 0分：我可以做很多我想做的工作。</label>
+                    <label><input type="radio" name="work" value="1"> 1分：我可以做大部分日常的工作，但不能太多。</label>
+                    <label><input type="radio" name="work" value="2"> 2分：我只能做一部分日常的工作。</label>
+                    <label><input type="radio" name="work" value="3"> 3分：我无法做我的日常工作。</label>
+                    <label><input type="radio" name="work" value="4"> 4分：我几乎无法工作。</label>
+                    <label><input type="radio" name="work" value="5"> 5分：我完全无法工作。</label>
+                </div>
+            </div>
+
+            <!-- 第八部分：驾驶 -->
+            <div class="section">
+                <h3>第八部分：驾驶</h3>
+                <div class="options">
+                    <label><input type="radio" name="driving" value="0" required> 0分：我可以驾驶而不会颈痛。</label>
+                    <label><input type="radio" name="driving" value="1"> 1分：我可以驾驶，但会有轻微颈痛。</label>
+                    <label><input type="radio" name="driving" value="2"> 2分：我可以驾驶，但会有中度颈痛。</label>
+                    <label><input type="radio" name="driving" value="3"> 3分：我有中度颈痛，使我驾驶困难。</label>
+                    <label><input type="radio" name="driving" value="4"> 4分：我有严重颈痛，使我无法驾驶。</label>
+                    <label><input type="radio" name="driving" value="5"> 5分：我完全无法驾驶。</label>
+                </div>
+            </div>
+
+            <!-- 第九部分：睡眠 -->
+            <div class="section">
+                <h3>第九部分：睡眠</h3>
+                <div class="options">
+                    <label><input type="radio" name="sleep" value="0" required> 0分：我睡眠没有问题。</label>
+                    <label><input type="radio" name="sleep" value="1"> 1分：我的睡眠稍受干扰（失眠，小于1小时）。</label>
+                    <label><input type="radio" name="sleep" value="2"> 2分：我的睡眠轻度受干扰（失眠1-2小时）。</label>
+                    <label><input type="radio" name="sleep" value="3"> 3分：我的睡眠中度受干扰（失眠2-3小时）。</label>
+                    <label><input type="radio" name="sleep" value="4"> 4分：我的睡眠严重受干扰（失眠3-5小时）。</label>
+                    <label><input type="radio" name="sleep" value="5"> 5分：我的睡眠完全受干扰（失眠5-7小时）。</label>
+                </div>
+            </div>
+
+            <!-- 第十部分：娱乐 -->
+            <div class="section">
+                <h3>第十部分：娱乐</h3>
+                <div class="options">
+                    <label><input type="radio" name="recreation" value="0" required> 0分：我可以参加所有的娱乐活动，而不会颈痛。</label>
+                    <label><input type="radio" name="recreation" value="1"> 1分：我可以参加所有的娱乐活动，但有一些颈痛。</label>
+                    <label><input type="radio" name="recreation" value="2"> 2分：因颈痛，我只能参加大部分日常的娱乐活动。</label>
+                    <label><input type="radio" name="recreation" value="3"> 3分：因颈痛，我只能参加一部分日常的娱乐活动。</label>
+                    <label><input type="radio" name="recreation" value="4"> 4分：因颈痛，我几乎无法参加任何娱乐活动。</label>
+                    <label><input type="radio" name="recreation" value="5"> 5分：我无法参加任何娱乐活动。</label>
+                </div>
+            </div>
+
+            <button type="button" id="calculateBtn">计算NDI评分</button>
+        </form>
+
+        <div id="result">
+            <h2>NDI评分结果</h2>
+            <div class="score-display" id="scoreText"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="interpretation" id="interpretation"></div>
+            <div class="recommendation" id="recommendation"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // 获取所有部分的分数
+            const sections = ['pain', 'care', 'lifting', 'reading', 'headache', 'concentration', 'work', 'driving', 'sleep', 'recreation'];
+            let totalScore = 0;
+            let allAnswered = true;
+            
+            // 计算总分
+            sections.forEach(section => {
+                const selected = document.querySelector(`input[name="${section}"]:checked`);
+                if (selected) {
+                    totalScore += parseInt(selected.value);
+                } else {
+                    allAnswered = false;
+                    // 高亮显示未回答的部分
+                    const sectionElement = document.querySelector(`input[name="${section}"]`).closest('.section');
+                    sectionElement.style.borderColor = '#e74c3c';
+                    sectionElement.style.backgroundColor = '#fdf2f2';
+                }
+            });
+            
+            if (!allAnswered) {
+                alert('请完成所有部分的评估，红色高亮的部分尚未选择答案。');
+                return;
+            }
+            
+            // 计算百分比
+            const percentage = (totalScore / 50) * 100;
+            
+            // 解读结果
+            let interpretation = '';
+            let recommendation = '';
+            let severityColor = '';
+            
+            if (percentage <= 4) {
+                interpretation = '无功能障碍';
+                recommendation = '您的颈部功能正常，无需特殊治疗。建议保持良好的姿势和颈部锻炼习惯。';
+                severityColor = '#27ae60';
+            } else if (percentage <= 14) {
+                interpretation = '轻度功能障碍';
+                recommendation = '您的颈部有轻度功能障碍。建议进行适当的颈部锻炼，注意工作姿势，避免长时间保持同一姿势。如果症状持续，建议咨询医生。';
+                severityColor = '#f39c12';
+            } else if (percentage <= 24) {
+                interpretation = '中度功能障碍';
+                recommendation = '您的颈部有中度功能障碍。建议咨询医生或物理治疗师，进行专业的评估和治疗。可能需要物理治疗或药物治疗。';
+                severityColor = '#e67e22';
+            } else if (percentage <= 34) {
+                interpretation = '重度功能障碍';
+                recommendation = '您的颈部有重度功能障碍。强烈建议尽快就医，接受专业的诊断和治疗方案。可能需要综合治疗包括物理治疗、药物治疗等。';
+                severityColor = '#e74c3c';
+            } else {
+                interpretation = '完全功能障碍或极度严重功能障碍';
+                recommendation = '您的颈部功能严重受损。请立即就医，进行全面的诊断和治疗。可能需要专科医生的深入评估和强化治疗。';
+                severityColor = '#c0392b';
+            }
+            
+            // 显示结果
+            document.getElementById('scoreText').textContent = `原始总分：${totalScore}/50，功能障碍百分比：${percentage.toFixed(1)}%`;
+            document.getElementById('scoreText').style.color = severityColor;
+            document.getElementById('interpretation').textContent = interpretation;
+            document.getElementById('interpretation').style.color = severityColor;
+            document.getElementById('recommendation').textContent = recommendation;
+            
+            // 更新进度条
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+            document.getElementById('progressFill').style.backgroundColor = severityColor;
+            
+            // 显示结果区域
+            document.getElementById('result').style.display = 'block';
+            
+            // 滚动到结果区域
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 重置部分样式当用户开始选择时
+        const allInputs = document.querySelectorAll('input[type="radio"]');
+        allInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const sectionElement = this.closest('.section');
+                sectionElement.style.borderColor = '#e0e0e0';
+                sectionElement.style.backgroundColor = '#f9f9f9';
+            });
+        });
+    </script>
+</body>
+</html>
